@@ -10,13 +10,13 @@
 #define RESET_PIN  4
 
 #define BMASK         0x03              //more intuitive style for mixed Ports
-#define DMASK         0xFC              //does exactly the same as previous
+#define DMASK         0xfc              //does exactly the same as previous
 #define write_8(x)    { PORTB = (PORTB & ~BMASK) | ((x) & BMASK); PORTD = (PORTD & ~DMASK) | ((x) & DMASK); }
 #define read_8()      ( (PINB & BMASK) | (PIND & DMASK) )
 #define setWriteDir() { DDRB |=  BMASK; DDRD |=  DMASK; }
 #define setReadDir()  { DDRB &= ~BMASK; DDRD &= ~DMASK; }
 #define write8(x)     { write_8(x); WR_STROBE; }
-#define write16(x)    { uint8_t h = (x)>>8, l = x; write8(h); write8(l); }
+#define write16(x)    { uint8_t h = (x) >> 8, l = x; write8(h); write8(l); }
 #define READ_8(dst)   { RD_STROBE; dst = read_8(); RD_IDLE; }
 #define READ_16(dst)  { uint8_t hi; READ_8(hi); READ_8(dst); dst |= (hi << 8); }
 
@@ -45,7 +45,7 @@
 
 #define CTL_INIT()   { RD_OUTPUT; WR_OUTPUT; CD_OUTPUT; CS_OUTPUT; RESET_OUTPUT; }
 
-#define TFTLCD_DELAY8 0x7F
+#define TFTLCD_DELAY8 0x7f
 
 static void write_table(const void *table, int16_t size) {
   uint8_t *p = (uint8_t *) table;
@@ -97,10 +97,10 @@ void begin() {
   };
   
   static const uint8_t t0[] PROGMEM = {
-    0x3a, 1, 0x55,        // interface pixel format
-    0xB6, 2, 0x00, 0x22,  // display function control
-    0x36, 1, 0xa8,        // memory access control, rotation, 0x08, 0x68, 0xc8, 0xa8
-    0x11, 0               // sleep out
+    0x3a,  1,  0x55,        // interface pixel format
+    0xB6,  2,  0x00, 0x22,  // display function control
+    0x36,  1,  0xa8,        // memory access control, rotation, 0x08, 0x68, 0xc8, 0xa8
+    0x11,  0                // sleep out
   };
   
   static const uint8_t td[] PROGMEM = {
@@ -112,7 +112,7 @@ void begin() {
   };
   
   static const uint8_t t1[] PROGMEM = {
-    0x29, 0               // display on
+    0x29,  0                // display on
   };
   
   write_table(&regs, sizeof(regs));
