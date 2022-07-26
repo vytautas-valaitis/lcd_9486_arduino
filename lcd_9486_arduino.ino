@@ -9,8 +9,9 @@
 #define RESET_PORT PORTC
 #define RESET_PIN  4
 
-#define BMASK         0x03              //more intuitive style for mixed Ports
-#define DMASK         0xfc              //does exactly the same as previous
+#define BMASK         0x03
+#define DMASK         0xfc
+
 #define write_8(x)    { PORTB = (PORTB & ~BMASK) | ((x) & BMASK); PORTD = (PORTD & ~DMASK) | ((x) & DMASK); }
 #define read_8()      ( (PINB & BMASK) | (PIND & DMASK) )
 #define setWriteDir() { DDRB |=  BMASK; DDRD |=  DMASK; }
@@ -40,10 +41,10 @@
 #define RESET_IDLE   PIN_HIGH(RESET_PORT, RESET_PIN)
 #define RESET_OUTPUT PIN_OUTPUT(RESET_PORT, RESET_PIN)
 
-#define WR_STROBE { WR_ACTIVE; WR_IDLE; }       //PWLW=TWRL=50ns
-#define RD_STROBE RD_IDLE, RD_ACTIVE, RD_ACTIVE, RD_ACTIVE      //PWLR=TRDL=150ns, tDDR=100ns
+#define WR_STROBE { WR_ACTIVE; WR_IDLE; }
+#define RD_STROBE RD_IDLE, RD_ACTIVE, RD_ACTIVE, RD_ACTIVE
 
-#define CTL_INIT()   { RD_OUTPUT; WR_OUTPUT; CD_OUTPUT; CS_OUTPUT; RESET_OUTPUT; }
+#define CTL_INIT() { RD_OUTPUT; WR_OUTPUT; CD_OUTPUT; CS_OUTPUT; RESET_OUTPUT; }
 
 #define TFTLCD_DELAY8 0x7f
 
@@ -86,14 +87,14 @@ void reset(void) {
 
 void begin() {
   static const uint8_t regs[] PROGMEM = {
-    0xC0,   2,  0x0d, 0x0d,                // power control 1
-    0xC1,   2,  0x43, 0x00,                // power control 2
-    0xC2,   1,  0x00,                      // power control 3
-    0xC5,   4,  0x00, 0x48, 0x00, 0x48,    // vcom control 1
-    0xB4,   1,  0x00,                      // display inversion control
-    0xB6,   3,  0x02, 0x02, 0x3B,          // display function control
+    0xC0,   2,  0x0d, 0x0d,              // power control 1
+    0xC1,   2,  0x43, 0x00,              // power control 2
+    0xC2,   1,  0x00,                    // power control 3
+    0xC5,   4,  0x00, 0x48, 0x00, 0x48,  // vcom control 1
+    0xB4,   1,  0x00,                    // display inversion control
+    0xB6,   3,  0x02, 0x02, 0x3B,        // display function control
     0xE0,  15,  0x0F, 0x21, 0x1C, 0x0B, 0x0E, 0x08, 0x49, 0x98, 0x38, 0x09, 0x11, 0x03, 0x14, 0x10, 0x00, // positive gamma control
-    0xE1,  15,  0x0F, 0x2F, 0x2B, 0x0C, 0x0E, 0x06, 0x47, 0x76, 0x37, 0x07, 0x11, 0x04, 0x23, 0x1E, 0x00, // negative gamma control
+    0xE1,  15,  0x0F, 0x2F, 0x2B, 0x0C, 0x0E, 0x06, 0x47, 0x76, 0x37, 0x07, 0x11, 0x04, 0x23, 0x1E, 0x00  // negative gamma control
   };
   
   static const uint8_t t0[] PROGMEM = {
@@ -112,7 +113,7 @@ void begin() {
   };
   
   static const uint8_t t1[] PROGMEM = {
-    0x29,  0                // display on
+    0x29,  0  // display on
   };
   
   write_table(&regs, sizeof(regs));
